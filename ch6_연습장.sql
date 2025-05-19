@@ -75,7 +75,7 @@ SELECT SUBSTR('960323-0000000', 1, 6) AS "생년월일" FROM DUAL;
 -- 이메일에서 @ 위치 찾기
 -- 별칭 골뱅이위치로 출력 해보기
 -- FROM DUAL
-SELECT INSTR('LLOLL156@NAVER.COM', '@') AS "골뱅이위치" FROM DUAL;
+SELECT INSTR('LLO@NAVER.COM', '@') AS "골뱅이위치" FROM DUAL;
 -- 퀴즈3, REPLACE
 -- 전화번호에서 - 제거 해보기, 010-7661-3709
 -- 별칭 정리된번호로 출력 해보기
@@ -85,7 +85,7 @@ SELECT REPLACE('010-7661-3709', '-', '') AS "정리된번호" FROM DUAL;
 -- 부서번호를 왼쪽으로 공백 채우기
 -- 별칭 정렬용 출력 해보기
 -- FROM EMP 이용하기
-SELECT LPAD(DEPTNO, 5, '*') AS "정렬용" FROM EMP;
+SELECT LPAD(DEPTNO, 4, ' ') AS "정렬용" FROM EMP;
 -- 퀴즈5, TRIM
 -- 앞뒤 공백 제거 해보기 예제 문자열 : 공백공백공백(본인이름)공백공백공백
 -- 별칭 정리된문자 출력 해보기
@@ -96,3 +96,40 @@ SELECT TRIM('   강신우   ') AS "정리된문자" FROM DUAL;
 -- 별칭 사원명 + 부서번호 출력 해보기
 -- FROM EMP 이용하기
 SELECT CONCAT(ENAME, DEPTNO) AS "사원명 + 부서번호" FROM EMP;
+SELECT ENAME || '_' || DEPTNO AS "사원명 + 부서번호" FROM EMP;
+
+--숫자 관련 함수 기본
+-- 급여의 소수점 둘째 자리에서 반올림
+SELECT ENAME, SAL, ROUND(123.456, 1) AS "ROUND(123.456, 1)" FROM EMP;
+-- 내림 소수점 이하 제거
+SELECT ENAME, SAL, TRUNC(123.456, 0) AS "TRUNC(123.456, 0)" FROM EMP;
+
+--사원 번호를 2로 나눈 나머지 출력
+SELECT ENAME, EMPNO, MOD(EMPNO, 2) AS "2로 나눈 나머지" FROM EMP;
+
+-- CEIL, FLOOR 비교
+SELECT ENAME, SAL, CEIL(SAL / 3), FLOOR(SAL / 3) FROM EMP;
+
+-- 퀴즈1, ROUND
+-- 소수점 둘째 자리까지 반올림 해보기
+-- 임의 숫자 : 123.4567
+-- 별칭 : 소수점 둘째 자리까지 반올림
+-- FROM DUAL
+SELECT ROUND(123.4567, 1) AS "소수점 둘째 반올림" FROM DUAL;
+-- 퀴즈2, TRUNC
+-- 소수점 첫째 자리에서 내림 해보기
+-- 임의 숫자 : 123.4567
+-- 별칭 : 소수점 첫째 자리에서 내림
+-- FROM DUAL
+SELECT TRUNC(123.4567, 1) AS "소수점 첫째 내림" FROM DUAL;
+-- 퀴즈3, CEIL, FLOOR
+-- CEIL, FLOOR 비교 해보기
+-- 임의 숫자 : 1.5, -1.5
+-- 별칭 : CEIL, FLOOR
+-- FROM DUAL
+SELECT CEIL(1.5), FLOOR(-1.5) AS "CEIL, FLOOR" FROM DUAL;
+-- 퀴즈4, MOD
+-- 사원번호를 4로 나눈 나머지 출력
+-- 별칭 : 4로 나눈 나머지
+-- FROM EMP
+SELECT ENAME, EMPNO, MOD(EMPNO, 4) AS "4로 나눈 나머지" FROM EMP;
