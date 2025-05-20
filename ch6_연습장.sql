@@ -115,7 +115,7 @@ SELECT ENAME, SAL, CEIL(SAL / 3), FLOOR(SAL / 3) FROM EMP;
 -- 임의 숫자 : 123.4567
 -- 별칭 : 소수점 둘째 자리까지 반올림
 -- FROM DUAL
-SELECT ROUND(123.4567, 1) AS "소수점 둘째 반올림" FROM DUAL;
+SELECT ROUND(123.4567, 2) AS "소수점 둘째 반올림" FROM DUAL;
 -- 퀴즈2, TRUNC
 -- 소수점 첫째 자리에서 내림 해보기
 -- 임의 숫자 : 123.4567
@@ -127,7 +127,9 @@ SELECT TRUNC(123.4567, 1) AS "소수점 첫째 내림" FROM DUAL;
 -- 임의 숫자 : 1.5, -1.5
 -- 별칭 : CEIL, FLOOR
 -- FROM DUAL
-SELECT CEIL(1.5), FLOOR(-1.5) AS "CEIL, FLOOR" FROM DUAL;
+-- 1~2 사이에서 , 1.5 기준 큰수 : 2, 작은 수 : 1
+-- -2 ~ -1 사이에서, 큰수 : -1 작은 수 : -2
+SELECT CEIL(1.5) AS "CEIL", FLOOR(-1.5) AS "FLOOR", FLOOR(1.5) AS "FLOOR", CEIL(-1.5) AS "CEIL" FROM DUAL;
 -- 퀴즈4, MOD
 -- 사원번호를 4로 나눈 나머지 출력
 -- 별칭 : 4로 나눈 나머지
