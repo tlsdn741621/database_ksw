@@ -28,9 +28,7 @@ GROUP BY JOB;
 -- 퀴즈1
 -- 급여가 2975 보다 높은 사원의 이름과 급여를 출력하시오
 SELECT ENAME AS"사원명", SAL AS"급여" FROM EMP
-WHERE SAL > (
-SELECT SAL FROM EMP WHERE SAL = 2975
-);
+WHERE SAL > 2975;
 -- 퀴즈2
 -- JONES 보다 급여가 높은 사원의 이름과 급여를 출력하시오
 SELECT ENAME AS"사원명", SAL AS"급여" FROM EMP
