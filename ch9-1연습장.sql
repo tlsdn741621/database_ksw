@@ -27,17 +27,16 @@ GROUP BY JOB;
 
 -- 퀴즈1
 -- 급여가 2975 보다 높은 사원의 이름과 급여를 출력하시오
-SELECT ENAME AS"사원명", SAL AS"급여" FROM EMP
-WHERE SAL > 2975;
+SELECT * FROM EMP WHERE SAL > 2975;
 -- 퀴즈2
 -- JONES 보다 급여가 높은 사원의 이름과 급여를 출력하시오
-SELECT ENAME AS"사원명", SAL AS"급여" FROM EMP
+SELECT * FROM EMP
 WHERE SAL > (
 SELECT SAL FROM EMP WHERE ENAME = 'JONES'
 );
 -- 퀴즈3 메인 쿼리에 서브 쿼리 이용해서, 부서명 출력
 -- DEPT 테이블의 부서명 표시
 SELECT ENAME AS"사원명", (
-SELECT DNAME FROM DEPT WHERE DEPTNO = EMP.DEPTNO
+SELECT DNAME FROM DEPT WHERE DEPT.DEPTNO = EMP.DEPTNO
 ) AS"부서명"
 FROM EMP;

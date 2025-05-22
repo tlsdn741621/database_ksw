@@ -30,6 +30,7 @@ GROUPING(JOB) AS"GROUP_JOB" FROM EMP GROUP BY ROLLUP(DEPTNO, JOB);
 -- SELECT * FROM (SELECT 기준 컬럼, 피벗컬럼, 값 컬럼 FROM 테이블명)
 -- PIVOT(집계함수(값 컬럼)FOR 피벗컬럼 IN(값1 AS 별칭1, 값2 AS 별칭2, .....));
 -- 직책별 급여 합계를 부서별로 , 가로 형태로 전환
+-- 세로로 나온 데이터 들을 가로 배치
 SELECT * FROM (SELECT DEPTNO, JOB, SAL FROM EMP)
 PIVOT(SUM(SAL) FOR JOB IN('CLERK' AS"사무직", 'MANAGER' AS"관리자", 'ANALYST' AS"분석가"));
 
@@ -39,10 +40,12 @@ PIVOT(SUM(SAL) FOR JOB IN('CLERK' AS"사무직", 'MANAGER' AS"관리자", 'ANALY
 -- SELECT * FROM (SELECT 기준 컬럼, 열1, 열2, ...FROM 테이블명)
 -- UNPIVOT(값 컬럼 FOR 피벗 컬럼 IN(열1, 열2,....));
 -- 위에서 PIVOT 된 결과를 다시 행으로 변환
-SELECT DEPTNO, JOB, SUM(SAL) AS "총급여"
-FROM ( 
+SELECT DEPTNO, JOB, SUM(SAL) AS "총급여" -- 메인쿼리
+FROM (
+-- 서브쿼리1
 SELECT * 
-    FROM ( 
+    FROM (
+    -- 서브쿼리2
     SELECT DEPTNO, JOB, SAL
     FROM EMP
     )
@@ -51,9 +54,13 @@ SELECT *
     ('CLERK' AS "사무직", 'MANAGER' AS "관리자",
     'ANALYST' AS "분석가")
     )
-)
+    -- 서브쿼리1 출력 모양
+    -- 출력 모양 DEPYNO 사무직 관리자 분석가
+    --             30   950   2850  NULL
+) -- 서브쿼리1 닫는 부분
 -- 위에서 만든, 가로로 변환한 예를 다시, 세로 방향으로 변환
 UNPIVOT (
+-- SAL : 실제 값이 할당이 되는 부분
     SAL FOR JOB IN (
     "사무직" AS 'CLERK', 
     "관리자" AS 'MANAGER',
