@@ -5,36 +5,62 @@
 
 -- 복사한 테이블에서 연습하기
 -- EMP -> EMP_COPY 테이블 복사
-CREATE TABLE EMP_COPY AS SELECT * FROM EMP;
+create table emp_copy
+   as
+      select *
+        from emp;
 
 -- 전체 수정
-UPDATE EMP_COPY SET SAL =1000;
+update emp_copy
+   set
+   sal = 1000;
 -- 반영, 저장
-COMMIT;
-SELECT * FROM EMP_COPY;
+commit;
+select *
+  from emp_copy;
 
 -- 조건 수정
-UPDATE EMP_COPY SET SAL = 2000 WHERE DEPTNO = 10;
+update emp_copy
+   set
+   sal = 2000
+ where deptno = 10;
 -- 되돌리기
-ROLLBACK;
+rollback;
 
 -- 서브쿼리 활용
-UPDATE EMP_COPY SET SAL = 2000
-WHERE DEPTNO = (
-SELECT DEPTNO FROM EMP WHERE ENAME = 'ALLEN'
+update emp_copy
+   set
+   sal = 2000
+ where deptno = (
+   select deptno
+     from emp
+    where ename = 'ALLEN'
 );
 
 -- 먼저는 연습용
 -- DEPT->DEPT_TEMP2 테이블 복사해보기
-CREATE TABLE DEPT_TEMP2 AS SELECT * FROM DEPT;
-SELECT * FROM DEPT_TEMP2;
+create table dept_temp2
+   as
+      select *
+        from dept;
+select *
+  from dept_temp2;
 -- 퀴즈1
 -- DPET_ TMP2 테이블 에서 부서번호가 20인 행의 지역을 'JEJU'로 수정하시오
-UPDATE DEPT_TEMP2 SET LOC = 'JEJU' WHERE DEPTNO = 20;
+update dept_temp2
+   set
+   loc = 'JEJU'
+ where deptno = 20;
 -- 퀴즈2, 
 -- DEPT_TEMP2 테이블의 전체 지역을 'SEOUL'로 변경하시오.  
-UPDATE DEPT_TEMP2 SET LOC = 'SEOUL';
+update dept_temp2
+   set
+   loc = 'SEOUL';
 -- 퀴즈3, 
 -- 직책이 'MANAGER'인 사원의 급여를 5000으로 일괄 수정하시오.
-UPDATE EMP_COPY SET SAL = 5000 WHERE JOB = 'MANAGER';
-SELECT * FROM EMP_COPY;
+update emp_copy
+   set
+   sal = 5000
+ where job = 'MANAGER';
+select *
+  from emp_copy;
