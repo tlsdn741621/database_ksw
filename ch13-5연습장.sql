@@ -1,0 +1,71 @@
+-- 공식 별칭을 지정하는 동의어 SYNONYM을 생성합니다.
+-- 즐겨찾기, 또는 사이트 도메인 이름, 연락처 이름
+
+-- 기본 개념
+
+
+
+-- 동의어 생성
+CREATE SYNONYM EMP_SYNONYM FOR EMP; -- 이름 의미있게 사용
+CREATE SYNONYM E FOR EMP; -- 비추
+
+-- 동의어 조회
+SELECT * FROM USER_SYNONYMS;
+
+-- 동의어를 이용한 조회
+SELECT * FROM EMP_SYNONYM; -- EMP 테이블 조회
+
+-- 권한 부여
+GRANT SELECT ON EMP TO PUBLIC; -- 모든 사용자에게 SELECT 권한 부여
+GRANT SELECT ON EMP TO SCOTT; -- 특정 사용자에게 SELECT 권한 부여
+
+-- 동의어 삭제
+DROP SYNONYM EMP_SYNONYM; -- 동의어 삭제
+DROP SYNONYM E; -- 동의어 삭제
+
+-- 스키마명 포함 접근
+SELECT * FROM SCOTT.EMP;
+
+-- PRIVATE 동의어 생성
+CREATE SYNONYM MY_EMP FOR SCOTT.EMP; -- 현재 사용자만 사용 가능
+
+-- 사용자 추가
+CREATE USER KSW IDENTIFIED BY 1234; -- 새 사용자 생성
+-- 기본 접속 권한만 추가
+GRANT CREATE SESSION TO KSW; -- 세션 생성 권한 부여
+
+-- 사용자 조회
+SELECT * FROM ALL_USERS WHERE USERNAME = 'KSW'; -- 새 사용자 확인
+
+-- 세션 기존 SCOTT 계정 -> KSW 계정으로 변경
+
+-- MY_EMP 동의어를 이용한 조회
+SELECT * FROM MY_EMP; -- KSW 계정에서 SCOTT.EMP 테이블 조회
+
+
+CREATE SYNONYM EMP_MINI FOR SCOTT.EMP;
+CREATE SYNONYM DEPT_MINI FOR SCOTT.DEPT;
+CREATE SYNONYM SALGRADE_MINI FOR SCOTT.SALGRADE;
+
+SELECT * FROM EMP_MINI;
+SELECT * FROM DEPT_MINI;
+SELECT * FROM SALGRADE_MINI;
+-- 퀴즈1, EMP, DEPT 조인 고려하기
+-- 동의어를 활용해서 부서명이 ‘ACCOUNTING’인 사원 이름과 직무를 출력하라.
+SELECT E.ENAME, E.JOB
+FROM EMP_MINI E
+JOIN DEPT D ON E.DEPTNO = D.DEPTNO
+WHERE D.DNAME = 'ACCOUNTING';
+-- 퀴즈2, EMP, SALGRADE 조인 고려하기 
+-- 급여 등급(GRADE) 3에 해당하는 사원 목록 출력
+SELECT E.ENAME, E.JOB, S.GRADE
+FROM EMP_MINI E
+JOIN SALGRADE S ON E.SAL BETWEEN S.LOSAL AND S.HISAL
+WHERE S.GRADE = 3;
+-- 퀴즈3, 자체 조인 및, SALGRADE 테이블 까지 조인을 고려하기
+-- 관리자(직속상관) 이름과 급여 등급을 동의어 기반으로 출력
+SELECT E.ENAME AS 사원명, M.ENAME AS 관리자명, S.GRADE AS 급여등급
+FROM EMP_MINI E
+JOIN EMP_MINI M ON E.MGR = M.EMPNO
+JOIN SALGRADE S ON E.SAL BETWEEN S.LOSAL AND S.HISAL
+WHERE E.MGR IS NOT NULL;

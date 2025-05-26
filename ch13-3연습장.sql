@@ -2,7 +2,12 @@
 
 -- 기본 개념
 
-
+-- | 용어 | 설명 |
+-- |------|------|
+-- | View | SELECT 결과를 가상의 테이블로 저장한 객체 |
+-- | Inline View | FROM절 내부에 작성된 SELECT 서브쿼리 |
+-- | WITH View | WITH절로 이름을 붙여 사용하는 인라인 뷰 |
+-- | ROWNUM | 결과 행 번호(Oracle 전용), TOP-N 필터링에 사용 |
 
 -- 기본 문법 예시
 -- 뷰 생성
@@ -49,3 +54,21 @@ DESC EMP_DEPT20_VIEW;
 
 -- 생성 뷰 삭제
 DROP VIEW EMP_DEPT20_VIEW;
+
+-- 퀴즈1, 
+--  SAL이 높은 상위 5명을 추출하는 뷰 emp_top5를 생성하시오.  
+CREATE VIEW EMP_TOP5 AS
+SELECT * FROM (SELECT EMPNO, ENAME, SAL FROM EMP WHERE SAL IS NOT NULL ORDER BY SAL DESC)
+WHERE ROWNUM <=5;
+-- 조회
+SELECT * FROM EMP_TOP5;
+-- 퀴즈2, 
+-- 인라인 뷰를 사용해 부서별 평균 급여를 구한 뒤, 평균이 2000 이상인 부서만 추출하시오.
+SELECT * FROM (
+    SELECT DEPTNO, AVG(SAL) AS AVG_SAL FROM EMP GROUP BY DEPTNO
+) WHERE AVG_SAL >= 2000;
+-- 퀴즈3, 
+--  WITH절을 이용해 JOB별 최고 급여를 구한 후, 최고급여가 2500 이상인 직무만 출력하시오.
+WITH JOB_SAL_MAX AS (
+    SELECT JOB, MAX(SAL) AS MAX_SAL FROM EMP GROUP BY JOB
+) SELECT * FROM JOB_SAL_MAX WHERE MAX_SAL >= 2500;
