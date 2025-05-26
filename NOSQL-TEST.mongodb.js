@@ -37,10 +37,11 @@ db.users.deleteOne({ name: '홍길동' }) // 조건에 맞는 첫번째 데이�
 // 컬렉션이 용량 초과하게 되면, 오래된 데이터 부터 차례대로 삭제하는 기능
 // db.createCollection('컬렉션명', { capped: true, size: [용량] })
 // 용량이 5KB인 컬렉션 생성, 부가 기능으로 용량 초과시 오래된 데이터 삭제
-db.createCollection('logs', { capped: true, size: 5000 }) // 5KB
+db.createCollection('logs3', { capped: true, size: 5000 }) // 5KB
 // 샘플 데이터 추가, 반복문을 이용해서, 샘플로 1000개 추가
-for (let i = 2000; i < 3000; i++) {
-    db.logs.insertOne({
+for (let i = 0; i < 1000; i++) {
+    db.logs3.insertOne({
+        // 로그 메시지 감싸는 기호는 백틱(`) 사용
         message: `로그 메시지 ${i}`,
         timestamp: new Date(),// 오라클로 표현 sysdate() 같음, 현재 날짜
     })
